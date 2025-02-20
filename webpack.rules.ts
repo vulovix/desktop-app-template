@@ -29,6 +29,17 @@ export const rules: Required<ModuleOptions>["rules"] = [
     },
   },
   {
+    test: /\.(png|jpe?g|gif|svg)$/,
+    type: "asset/resource",
+    generator: {
+      filename: "assets/images/[hash][ext][query]",
+    },
+  },
+  {
+    test: /\.css$/,
+    use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+  },
+  {
     test: /\.s[ac]ss$/i,
     use: ["style-loader", "css-loader", "sass-loader"],
   },

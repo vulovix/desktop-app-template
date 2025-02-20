@@ -20,8 +20,13 @@
       },
       "node": {
         "paths": ["src"],
-        "extensions": [".js", ".ts", ".jsx", ".tsx", ".css", ".json"]
+        "extensions": [".js", ".ts", ".jsx", ".tsx", ".css", ".json", ".png"]
       }
     }
+    // "import/ignore": "0"
+    // "import/ignore": ["react-router"]
+  },
+  "rules": {
+    "eslint-plugin-import/namespace": "off"
   }
 }

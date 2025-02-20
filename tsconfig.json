@@ -10,9 +10,8 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["./src/global.d.ts"],
     "jsx": "react-jsx",
     "baseUrl": "src"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "global.d.ts", "types.d.ts"]
 }
