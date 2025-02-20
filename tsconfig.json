@@ -12,10 +12,7 @@
     "resolveJsonModule": true,
     "types": ["./src/global.d.ts"],
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "baseUrl": "src"
   },
   "include": ["src/**/*"]
 }
