@@ -1,12 +1,13 @@
 import { Text } from "@mantine/core";
+import { api } from "api";
 import { useEffect, useState } from "react";
 
 export function Greet() {
   const [name, setName] = useState("");
   useEffect(() => {
     (async () => {
-      setName(await window.api.greet("World"));
+      setName(await api.greet("World"));
     })();
   }, []);
-  return <Text>Hello, {name}!</Text>;
+  return <Text>Hello {name}</Text>;
 }
