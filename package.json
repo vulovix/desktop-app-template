@@ -10,9 +10,11 @@
     "desktop:make": "electron-forge make",
     "desktop:publish": "electron-forge publish",
     "web:build": "webpack --config webpack.web.production.ts",
+    "web:build:dev": "webpack --config webpack.web.dev.ts",
     "web:start": "webpack-dev-server --config webpack.web.dev.ts",
     "web:start:production": "webpack-dev-server --config webpack.web.production.ts --host localhost --port 8080 --open",
     "web:serve": "npx serve -s build",
+    "web:serve:dev": "webpack serve --watch --config webpack.web.dev.ts",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
@@ -36,7 +38,6 @@
     "@typescript-eslint/parser": "^5.62.0",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
     "circular-dependency-plugin": "^5.2.2",
-    "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "^11.1.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.11.0",
@@ -59,7 +60,8 @@
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0",
-    "webpackbar": "^7.0.0"
+    "webpackbar": "^7.0.0",
+    "workbox-webpack-plugin": "^7.3.0"
   },
   "dependencies": {
     "@mantine/core": "^7.16.3",

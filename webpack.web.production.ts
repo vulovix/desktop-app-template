@@ -1,22 +1,58 @@
 import path from "path";
-import WebpackBar from "webpackbar";
+import webpack from "webpack";
+
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import { GenerateSW } from "workbox-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import { WebpackConfiguration } from "webpack-dev-server";
 import CompressionPlugin from "compression-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import WebpackBar from "webpackbar";
 
-module.exports = {
+const config: WebpackConfiguration = {
   mode: "production",
   context: process.cwd(),
-  entry: "./src/app.tsx",
+  entry: "./src/renderer.ts",
   output: {
+    clean: true,
     path: path.resolve(process.cwd(), "build"),
     filename: "[name].[chunkhash].js",
     chunkFilename: "[name].[chunkhash].chunk.js",
     publicPath: "/",
   },
+  // devtool: "cheap-source-map",
   devtool: "source-map",
+  optimization: {
+    runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all", // Enable chunking for all modules
+      minSize: 0, // Create chunks even if they are small
+      cacheGroups: {
+        default: false,
+        core: {
+          test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+          name: "core",
+          chunks: "all",
+          priority: 20,
+          enforce: true,
+        },
+        mantine: {
+          test: /[\\/]node_modules[\\/]@mantine[\\/]/,
+          name: "mantine",
+          chunks: "all",
+          priority: 15,
+          enforce: true,
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+          priority: -10,
+        },
+      },
+    },
+  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     modules: ["node_modules", "src"],
@@ -55,9 +91,50 @@ module.exports = {
       inject: true,
       template: "src/index.html",
     }),
+    new webpack.ProvidePlugin({
+      React: "react",
+    }),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
       failOnError: true,
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "public/manifest.json", to: "manifest.json" },
+        { from: "public/icons", to: "icons" },
+        { from: "public/images", to: "images" },
+      ],
+    }),
+    new GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+      cleanupOutdatedCaches: true,
+      ignoreURLParametersMatching: [/^timestamp$/], // Ignore cache-busting query, i.e. ?timestamp
+      exclude: [/^\/api\//], // Prevent caching all `/api/*` requests
+      runtimeCaching: [
+        {
+          urlPattern: ({ request }) => request.destination === "script",
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "js-cache",
+          },
+        },
+        {
+          urlPattern: ({ request }) => request.destination === "style",
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "css-cache",
+          },
+        },
+        {
+          urlPattern: ({ request }) => request.destination === "image",
+          // urlPattern: /\.(?:html|js|css|png|jpg|svg)$/,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "image-cache",
+          },
+        },
+      ],
     }),
     new CompressionPlugin({
       algorithm: "gzip",
@@ -65,75 +142,12 @@ module.exports = {
       threshold: 10240,
       minRatio: 0.8,
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [{ from: "public" }],
-    // }),
-    new WebpackBar(),
-    new CleanWebpackPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
       openAnalyzer: false,
     }),
+    new WebpackBar(),
   ],
-  optimization: {
-    runtimeChunk: "single",
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        default: false,
-        core: {
-          test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-          name: "core",
-          chunks: "all",
-          priority: 20,
-          enforce: true,
-        },
-        mantine: {
-          test: /[\\/]node_modules[\\/]@mantine[\\/]/,
-          name: "mantine",
-          chunks: "all",
-          priority: 15,
-          enforce: true,
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
-          priority: -10,
-        },
-        // reactDom: {
-        //   reuseExistingChunk: false,
-        //   enforce: true,
-        //   test: /[\\/]node_modules[\\/](react-dom)[\\/]/,
-        //   name: 'npm.react-dom',
-        // },
-        // react: {
-        //   reuseExistingChunk: false,
-        //   enforce: true,
-        //   test: /[\\/]node_modules[\\/](react)[\\/]/,
-        //   name: 'npm.react',
-        // },
-        // multipleChunks: {
-        //   test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-        //   name: 'multipleChunks',
-        //   chunks: 'all',
-        //   priority: 10,
-        //   enforce: true, // Ensures it always creates this chunk
-        // },
-        // 'my-ui': {
-        //   reuseExistingChunk: false,
-        //   enforce: true,
-        //   test: /[\\/]packages[\\/]ui[\\/]/,
-        //   name: 'my-ui',
-        // },
-        // vendor: {
-        //   test: /[\\/]node_modules[\\/]/,
-        //   name(module) {
-        //     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-        //     return `npm.${packageName.replace('@', '')}`;
-        //   },
-        // },
-      },
-    },
-  },
 };
+
+module.exports = config;

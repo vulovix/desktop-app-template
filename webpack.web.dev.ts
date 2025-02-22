@@ -3,8 +3,11 @@ import webpack from "webpack";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import { WebpackConfiguration } from "webpack-dev-server";
+import { GenerateSW } from "workbox-webpack-plugin";
 
-module.exports = {
+const config: WebpackConfiguration = {
   mode: "development",
   context: process.cwd(),
   entry: "./src/renderer.ts",
@@ -15,6 +18,12 @@ module.exports = {
     publicPath: "/",
   },
   devtool: "cheap-source-map",
+  optimization: {
+    // runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all",
+    },
+  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     modules: ["node_modules", "src"],
@@ -60,6 +69,26 @@ module.exports = {
       exclude: /node_modules/,
       failOnError: true,
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "public/manifest.json", to: "manifest.json" },
+        { from: "public/icons", to: "icons" },
+        { from: "public/images", to: "images" },
+      ],
+    }),
+    // new GenerateSW({
+    //   clientsClaim: true,
+    //   skipWaiting: true,
+    //   runtimeCaching: [
+    //     {
+    //       urlPattern: /\.(?:html|js|css|png|jpg|svg)$/,
+    //       handler: "StaleWhileRevalidate",
+    //       options: {
+    //         cacheName: "static-resources",
+    //       },
+    //     },
+    //   ],
+    // }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
@@ -67,7 +96,14 @@ module.exports = {
     port: 3001,
     historyApiFallback: true,
     static: {
-      directory: path.join(process.cwd(), "dist-web"),
+      directory: path.join(process.cwd(), "public"),
+    },
+    client: {
+      overlay: {
+        errors: true,
+        runtimeErrors: true,
+        warnings: true,
+      },
     },
     proxy: [
       {
@@ -82,3 +118,5 @@ module.exports = {
     ],
   },
 };
+
+module.exports = config;

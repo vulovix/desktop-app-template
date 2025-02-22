@@ -42,7 +42,6 @@ export function Header() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log(pathname);
     close();
   }, [pathname]);
 
