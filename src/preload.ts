@@ -4,6 +4,8 @@ import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
   greet: (name: string) => ipcRenderer.invoke("greet", name),
+  getCats: (url: string) => ipcRenderer.invoke("get-cats", url),
+  fetchData: (url: string) => ipcRenderer.invoke("fetch-data", url),
 });
 
 ipcRenderer.on("process-output", (_event, payload) => {

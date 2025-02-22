@@ -1,0 +1,43 @@
+@use 'styles/mantine' as *;
+
+.features-wrapper {
+  .title {
+    font-weight: 900;
+    font-size: 34px;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 24px;
+    }
+  }
+
+  .description {
+    margin: auto;
+    max-width: 600px;
+
+    &::after {
+      display: block;
+      margin-top: var(--mantine-spacing-sm);
+      margin-right: auto;
+      margin-left: auto;
+      background-color: var(--mantine-color-blue-filled);
+      width: 45px;
+      height: 2px;
+      content: '';
+    }
+  }
+
+  .card {
+    border: 1px solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  }
+
+  .cardTitle {
+    &::after {
+      display: block;
+      margin-top: var(--mantine-spacing-sm);
+      background-color: var(--mantine-color-blue-filled);
+      width: 45px;
+      height: 2px;
+      content: '';
+    }
+  }
+}

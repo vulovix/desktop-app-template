@@ -1,0 +1,63 @@
+@use 'styles/mantine' as *;
+
+.hero-wrapper {
+  position: relative;
+  box-sizing: border-box;
+
+  .inner {
+    position: relative;
+    margin: 0;
+    padding-top: 200px;
+    padding-bottom: 120px;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  .title {
+    margin: 0;
+    padding: 0;
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+    font-weight: 900;
+    font-size: 62px;
+    line-height: 1.1;
+    font-family: var(--mantine-font-family);
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 42px;
+      line-height: 1.2;
+    }
+  }
+
+  .description {
+    margin-top: var(--mantine-spacing-xl);
+    font-size: 24px;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 18px;
+    }
+  }
+
+  .controls {
+    margin-top: calc(var(--mantine-spacing-xl) * 2);
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      margin-top: var(--mantine-spacing-xl);
+    }
+  }
+
+  .control {
+    padding-right: 38px;
+    padding-left: 38px;
+    height: 54px;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      flex: 1;
+      padding-right: 18px;
+      padding-left: 18px;
+      height: 54px;
+    }
+  }
+}

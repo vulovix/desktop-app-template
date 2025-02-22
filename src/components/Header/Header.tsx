@@ -125,7 +125,7 @@ export function Header() {
           <NavLink to="/" className={"logoLink"}>
             <Group gap={"xs"} justify="end">
               <Image className={"logoImage"} src={logo} w={32} h={32} />
-              <h1 className="logoTitle">LOGO</h1>
+              <h1 className="logoTitle">FULL CRACK</h1>
             </Group>
           </NavLink>
           <Group gap={5} visibleFrom="sm">

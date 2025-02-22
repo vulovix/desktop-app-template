@@ -10,6 +10,7 @@ const greet = async (name: string): Promise<string> => {
 
 const api = {
   greet,
+  // get
 };
 
 export { api };
