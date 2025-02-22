@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import { AboutRoute } from "routes/About";
 import { IndexRoute } from "routes/Index";
-import { Layout } from "./Layout";
+import { DefaultLayout } from "../RouterLayout/Default";
 
 export function Router() {
   return (
@@ -9,17 +9,17 @@ export function Router() {
       <Route
         index
         element={
-          <Layout>
+          <DefaultLayout>
             <IndexRoute />
-          </Layout>
+          </DefaultLayout>
         }
       />
       <Route
         path="about"
         element={
-          <Layout>
+          <DefaultLayout>
             <AboutRoute />
-          </Layout>
+          </DefaultLayout>
         }
       />
     </Routes>

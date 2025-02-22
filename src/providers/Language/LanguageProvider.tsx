@@ -1,14 +1,16 @@
-import { JSX, useState } from 'react';
+import { createContext, JSX, useState } from "react";
 
-import { IntlProvider } from 'react-intl';
-import LanguageProviderContext from './context';
-import { LanguageProviderProps } from './types';
+import { IntlProvider } from "react-intl";
+
+import { ILanguageProviderContext, LanguageProviderProps } from "./types";
+
+export const LanguageProviderContext = createContext<ILanguageProviderContext | null>(null);
 
 export const LanguageProvider = (props: LanguageProviderProps): JSX.Element => {
   const { children, defaultLocale, messages, locale: _locale, ...restIntlProps } = props;
   const [locale, setLocale] = useState(defaultLocale);
   return (
-    <LanguageProviderContext.Provider
+    <LanguageProviderContext
       value={{
         locale,
         setLocale,
@@ -17,6 +19,6 @@ export const LanguageProvider = (props: LanguageProviderProps): JSX.Element => {
       <IntlProvider locale={locale} messages={messages[locale]} defaultLocale={defaultLocale} {...restIntlProps}>
         {children}
       </IntlProvider>
-    </LanguageProviderContext.Provider>
+    </LanguageProviderContext>
   );
 };

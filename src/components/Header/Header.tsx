@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { NavLink, useLocation, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate, useResolvedPath } from "react-router";
 import { Burger, Center, Container, Group, Image, Menu, Stack } from "@mantine/core";
 import logo from "assets/images/logo.png";
 
@@ -39,17 +39,18 @@ const links: Array<Link> = [
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  useEffect(() => {
+  const handleNavigate = (path: string) => {
+    navigate(path);
     close();
-  }, [pathname]);
+  };
+
+  const { pathname } = useResolvedPath("");
 
   const items = links.map((link) => {
     const { links } = link;
     const menuItems = links.length
       ? links.map((item) => (
-          <Menu.Item onClick={() => navigate(item.link)} key={item.link}>
+          <Menu.Item onClick={() => handleNavigate(item.link)} key={item.link}>
             {item.label}
           </Menu.Item>
         ))
@@ -81,7 +82,7 @@ export function Header() {
   const mobileItems = links.map((link) => {
     const menuItems = link.links.length
       ? link.links.map((item) => (
-          <Menu.Item onClick={() => navigate(item.link)} key={item.link}>
+          <Menu.Item className={`${pathname === link.link ? "active" : ""}`} onClick={() => handleNavigate(item.link)} key={item.link}>
             {item.label}
           </Menu.Item>
         ))
@@ -112,7 +113,7 @@ export function Header() {
     }
 
     return (
-      <NavLink key={link.label} to={link.link} className={"link"}>
+      <NavLink key={link.label} to={link.link} onClick={close} className={({ isActive }) => (isActive ? `link active` : "link")}>
         {link.label}
       </NavLink>
     );

@@ -15,8 +15,7 @@ export {
   createIntl,
   injectIntl,
   useIntl,
-} from 'react-intl';
-export { LanguageProvider } from './LanguageProvider';
-export { useLanguageProvider } from './useLanguageProvider';
-export { useTranslate } from './useTranslate';
-export { formatTranslationMessages } from './utils';
+} from "react-intl";
+export { LanguageProvider } from "./LanguageProvider";
+export { formatTranslationMessages } from "./utils";
+export * from "./hooks";

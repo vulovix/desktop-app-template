@@ -4,7 +4,6 @@ import { MemoryRouter, BrowserRouter } from "react-router";
 import { Router } from "features/Router";
 import "styles/index.scss";
 import { isElectron } from "utils";
-import { ServiceWorkerNotifier } from "providers/ServiceWorkerNotifier";
 import store from "libs/redux/store";
 import { Provider as ReduxProvider } from "react-redux";
 import { defaultLocale, translationMessages } from "libs/translations";
@@ -18,7 +17,6 @@ root.render(
   <ReduxProvider store={store}>
     <LanguageProvider locale={defaultLocale} defaultLocale={defaultLocale} messages={translationMessages}>
       <MantineThemeProvider>
-        <ServiceWorkerNotifier />
         <RouterProvider>
           <Router />
         </RouterProvider>

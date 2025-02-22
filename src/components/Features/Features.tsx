@@ -3,7 +3,7 @@ import { CatDisplay } from "features/CatDisplay/CatDisplay";
 import { LanguagePicker } from "features/LanguagePicker/LanguagePicker";
 import { SiI18Next, SiReactrouter, SiReduxsaga, SiWebpack } from "react-icons/si";
 import { TbBrandMantine, TbBrandTypescript } from "react-icons/tb";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "providers/Language";
 import "./Features.scss";
 
 const mockdata = [

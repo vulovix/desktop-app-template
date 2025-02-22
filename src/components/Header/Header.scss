@@ -43,6 +43,10 @@
     line-height: 1;
     text-decoration: none;
 
+    &.active {
+      color: var(--mantine-color-anchor);
+    }
+
     @mixin hover {
       background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     }
